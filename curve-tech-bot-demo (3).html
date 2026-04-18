@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Curve Tech — AI WhatsApp Bot Demo</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blue: #1a6fe8;
+    --blue-dark: #1458c0;
+    --blue-light: #e8f0fd;
+    --blue-mid: #3b82f6;
+    --teal: #00c9a7;
+    --teal-light: #e0faf5;
+    --green-wa: #25D366;
+    --green-wa-dark: #128C7E;
+    --bg: #ffffff;
+    --bg2: #f5f8ff;
+    --bg3: #eef3fc;
+    --text: #1a1f36;
+    --text2: #4a5568;
+    --muted: #718096;
+    --border: #e2e8f0;
+    --border2: #cbd5e0;
+    --white: #ffffff;
+    --shadow: 0 4px 24px rgba(26,111,232,0.10);
+    --shadow-lg: 0 12px 48px rgba(26,111,232,0.15);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    overflow-x: hidden;
+    line-height: 1.6;
+  }
+
+  /* ── NAVBAR ── */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 40px;
+    height: 68px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+
+  /* SVG logo matching website style */
+  .logo-svg {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .logo-icon-wrap {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .logo-text {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 17px;
+    color: var(--text);
+    letter-spacing: -0.3px;
+  }
+
+  .logo-text span { color: var(--blue); }
+
+  .nav-tagline {
+    font-size: 10px;
+    color: var(--muted);
+    font-weight: 400;
+    display: block;
+    margin-top: -2px;
+    letter-spacing: 0.02em;
+  }
+
+  .nav-right { display: flex; align-items: center; gap: 12px; }
+
+  .nav-link {
+    font-size: 13.5px;
+    color: var(--text2);
+    text-decoration: none;
+    font-weight: 500;
+    padding: 6px 12px;
+    border-radius: 8px;
+    transition: all 0.2s;
+  }
+  .nav-link:hover { background: var(--bg2); color: var(--blue); }
+
+  .btn-nav {
+    background: var(--blue);
+    color: white;
+    font-size: 13.5px;
+    font-weight: 600;
+    padding: 9px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .btn-nav:hover { background: var(--blue-dark); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(26,111,232,0.3); }
+
+  /* ── HERO ── */
+  .hero {
+    background: linear-gradient(135deg, #f0f5ff 0%, #ffffff 50%, #e8f8f4 100%);
+    padding: 80px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -80px; right: -80px;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(26,111,232,0.06) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -60px; left: 10%;
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(0,201,167,0.06) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+
+  /* dot pattern */
+  .hero-dots {
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba(26,111,232,0.08) 1px, transparent 1px);
+    background-size: 28px 28px;
+    pointer-events: none;
+  }
+
+  .hero-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--blue-light);
+    color: var(--blue);
+    border-radius: 20px;
+    padding: 5px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  .live-dot {
+    width: 7px; height: 7px;
+    background: var(--teal);
+    border-radius: 50%;
+    animation: blink 2s ease-in-out infinite;
+  }
+
+  @keyframes blink {
+    0%,100% { opacity:1; } 50% { opacity:0.3; }
+  }
+
+  .hero h1 {
+    font-family: 'Nunito', sans-serif;
+    font-size: clamp(32px, 4.5vw, 52px);
+    font-weight: 900;
+    line-height: 1.1;
+    letter-spacing: -1px;
+    color: var(--text);
+    margin-bottom: 18px;
+  }
+
+  .hero h1 .accent { color: var(--blue); }
+  .hero h1 .accent2 { color: var(--teal); }
+
+  .hero p {
+    font-size: 16px;
+    color: var(--text2);
+    line-height: 1.7;
+    margin-bottom: 36px;
+    max-width: 460px;
+    font-weight: 400;
+  }
+
+  .hero-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--blue);
+    color: white;
+    font-weight: 700;
+    font-size: 15px;
+    padding: 14px 28px;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: all 0.25s;
+    box-shadow: 0 4px 20px rgba(26,111,232,0.25);
+  }
+  .btn-primary:hover { background: var(--blue-dark); transform: translateY(-2px); box-shadow: 0 8px 30px rgba(26,111,232,0.35); }
+
+  .btn-wa {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--green-wa);
+    color: white;
+    font-weight: 700;
+    font-size: 15px;
+    padding: 14px 28px;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: all 0.25s;
+    box-shadow: 0 4px 20px rgba(37,211,102,0.25);
+    animation: wa-pulse 3s ease-in-out infinite;
+  }
+  .btn-wa:hover { background: #20c55e; transform: translateY(-2px); box-shadow: 0 8px 30px rgba(37,211,102,0.4); }
+
+  @keyframes wa-pulse {
+    0%,100% { box-shadow: 0 4px 20px rgba(37,211,102,0.25); }
+    50% { box-shadow: 0 4px 32px rgba(37,211,102,0.5); }
+  }
+
+  .btn-wa svg, .btn-primary svg { width: 20px; height: 20px; flex-shrink: 0; }
+
+  /* ── PHONE MOCKUP ── */
+  .phone-wrap {
+    display: flex;
+    justify-content: center;
+    position: relative;
+  }
+
+  .phone-wrap::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%,-50%);
+    width: 320px; height: 320px;
+    background: radial-gradient(circle, rgba(26,111,232,0.08) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+
+  .phone {
+    width: 260px;
+    background: #1c1c1e;
+    border-radius: 38px;
+    border: 2px solid #2d2d2d;
+    padding: 12px 8px;
+    box-shadow: 0 32px 64px rgba(0,0,0,0.25), 0 0 0 1px rgba(255,255,255,0.06), 0 0 80px rgba(26,111,232,0.12);
+    position: relative;
+    z-index: 1;
+  }
+
+  .phone-notch {
+    width: 72px; height: 22px;
+    background: #1c1c1e;
+    border-radius: 0 0 14px 14px;
+    margin: 0 auto 6px;
+    border: 2px solid #2d2d2d;
+    border-top: none;
+  }
+
+  .phone-screen {
+    background: #ece5dd;
+    border-radius: 26px;
+    overflow: hidden;
+    height: 500px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .wa-header {
+    background: var(--green-wa-dark);
+    padding: 10px 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .wa-back { color: rgba(255,255,255,0.8); font-size: 18px; }
+
+  .wa-avatar {
+    width: 34px; height: 34px;
+    background: linear-gradient(135deg, var(--blue) 0%, var(--blue-mid) 100%);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; flex-shrink: 0;
+    color: white; font-weight: 700;
+    font-family: 'Nunito', sans-serif;
+  }
+
+  .wa-info { flex: 1; }
+  .wa-name { font-size: 13px; font-weight: 700; color: white; }
+  .wa-status { font-size: 10.5px; color: rgba(255,255,255,0.75); }
+
+  .wa-chat {
+    flex: 1;
+    padding: 10px 8px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    background: #ece5dd url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23c8b8a2' fill-opacity='0.12'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/svg%3E");
+  }
+
+  .msg {
+    max-width: 80%;
+    padding: 7px 10px 16px;
+    border-radius: 8px;
+    font-size: 11.5px;
+    line-height: 1.45;
+    position: relative;
+    animation: fadeUp 0.3s ease;
+  }
+
+  @keyframes fadeUp {
+    from { opacity:0; transform: translateY(8px); }
+    to { opacity:1; transform: translateY(0); }
+  }
+
+  .msg-bot { background: #fff; color: #111; align-self: flex-start; border-radius: 0 8px 8px 8px; box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
+  .msg-user { background: #d9fdd3; color: #111; align-self: flex-end; border-radius: 8px 0 8px 8px; box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
+
+  .msg-time { position: absolute; bottom: 3px; right: 8px; font-size: 9px; color: #999; }
+
+  .typing-bubble {
+    background: #fff;
+    border-radius: 0 8px 8px 8px;
+    padding: 10px 14px;
+    display: inline-flex;
+    gap: 3px;
+    align-self: flex-start;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+  }
+
+  .t-dot {
+    width: 6px; height: 6px;
+    background: #aaa;
+    border-radius: 50%;
+    animation: tdot 1.2s ease-in-out infinite;
+  }
+  .t-dot:nth-child(2) { animation-delay: 0.2s; }
+  .t-dot:nth-child(3) { animation-delay: 0.4s; }
+
+  @keyframes tdot {
+    0%,60%,100% { transform: translateY(0); }
+    30% { transform: translateY(-4px); }
+  }
+
+  /* ── STATS BAR ── */
+  .stats-bar {
+    background: var(--blue);
+    padding: 24px 40px;
+  }
+
+  .stats-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    text-align: center;
+  }
+
+  .stat-item { padding: 8px 0; }
+
+  .stat-num {
+    font-family: 'Nunito', sans-serif;
+    font-size: 30px;
+    font-weight: 900;
+    color: white;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .stat-label { font-size: 12.5px; color: rgba(255,255,255,0.75); font-weight: 400; }
+
+  /* ── SECTION GENERIC ── */
+  .section { padding: 80px 40px; }
+  .section-alt { background: var(--bg2); }
+
+  .section-inner { max-width: 1100px; margin: 0 auto; }
+
+  .section-eyebrow {
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin-bottom: 10px;
+  }
+
+  .section-title {
+    font-family: 'Nunito', sans-serif;
+    font-size: clamp(26px, 3.5vw, 38px);
+    font-weight: 900;
+    letter-spacing: -0.5px;
+    color: var(--text);
+    margin-bottom: 12px;
+    line-height: 1.15;
+  }
+
+  .section-title .hl { color: var(--blue); }
+  .section-title .hl2 { color: var(--teal); }
+
+  .section-sub {
+    font-size: 15px;
+    color: var(--text2);
+    max-width: 540px;
+    margin-bottom: 48px;
+    font-weight: 400;
+    line-height: 1.7;
+  }
+
+  .text-center { text-align: center; }
+  .text-center .section-sub { margin: 0 auto 48px; }
+
+  /* ── SERVICES GRID ── */
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .service-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px 24px;
+    transition: all 0.25s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .service-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--blue), var(--teal));
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+    transform-origin: left;
+  }
+
+  .service-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-4px); border-color: rgba(26,111,232,0.2); }
+  .service-card:hover::after { transform: scaleX(1); }
+
+  .svc-icon {
+    width: 50px; height: 50px;
+    background: var(--blue-light);
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    margin-bottom: 16px;
+  }
+
+  .service-card h3 {
+    font-family: 'Nunito', sans-serif;
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--text);
+    margin-bottom: 10px;
+  }
+
+  .service-card p {
+    font-size: 13.5px;
+    color: var(--text2);
+    line-height: 1.65;
+    font-weight: 400;
+  }
+
+  .learn-more {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--blue);
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    margin-top: 14px;
+    transition: gap 0.2s;
+  }
+  .learn-more:hover { gap: 8px; }
+
+  /* ── HOW IT WORKS ── */
+  .flow-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+    position: relative;
+  }
+
+  .flow-grid::before {
+    content: '';
+    position: absolute;
+    top: 28px; left: calc(16.66% + 24px); right: calc(16.66% + 24px);
+    height: 2px;
+    background: linear-gradient(90deg, var(--blue), var(--teal));
+    z-index: 0;
+  }
+
+  .flow-step {
+    text-align: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  .flow-num {
+    width: 56px; height: 56px;
+    background: var(--blue);
+    color: white;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 900;
+    font-size: 18px;
+    margin: 0 auto 16px;
+    box-shadow: 0 4px 16px rgba(26,111,232,0.3);
+    border: 3px solid white;
+  }
+
+  .flow-step h4 {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 15px;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+
+  .flow-step p {
+    font-size: 13px;
+    color: var(--text2);
+    line-height: 1.6;
+  }
+
+  .flow-tag {
+    display: inline-block;
+    background: var(--blue-light);
+    color: var(--blue);
+    font-size: 10.5px;
+    font-weight: 600;
+    border-radius: 6px;
+    padding: 3px 8px;
+    margin-top: 10px;
+  }
+
+  /* ── RELIABILITY CARDS ── */
+  .reliability-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+
+  .rel-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+    transition: box-shadow 0.2s;
+  }
+
+  .rel-card:hover { box-shadow: var(--shadow); }
+
+  .rel-card.followup { border-top: 3px solid var(--blue); }
+  .rel-card.errorh { border-top: 3px solid var(--teal); }
+
+  .rel-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .rel-icon {
+    width: 42px; height: 42px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+  }
+
+  .rel-icon.blue { background: var(--blue-light); }
+  .rel-icon.teal { background: var(--teal-light); }
+
+  .rel-card h3 {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 16px;
+    color: var(--text);
+  }
+
+  .rel-list { display: flex; flex-direction: column; gap: 10px; }
+
+  .rel-list li {
+    display: flex;
+    gap: 10px;
+    font-size: 13.5px;
+    color: var(--text2);
+    line-height: 1.5;
+    list-style: none;
+    align-items: flex-start;
+  }
+
+  .rel-list li .ck {
+    width: 18px; height: 18px;
+    background: var(--blue-light);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+    font-size: 10px;
+    color: var(--blue);
+    font-weight: 700;
+  }
+
+  .rel-card.errorh .rel-list li .ck { background: var(--teal-light); color: var(--teal); }
+
+  /* ── FINAL CTA ── */
+  .cta-section {
+    background: linear-gradient(135deg, var(--blue) 0%, #1458c0 60%, #0f3d8a 100%);
+    padding: 80px 40px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta-section::before {
+    content: '';
+    position: absolute;
+    top: -100px; right: -100px;
+    width: 400px; height: 400px;
+    background: rgba(255,255,255,0.04);
+    border-radius: 50%;
+  }
+
+  .cta-section::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; left: -80px;
+    width: 300px; height: 300px;
+    background: rgba(0,201,167,0.08);
+    border-radius: 50%;
+  }
+
+  .cta-inner { max-width: 600px; margin: 0 auto; position: relative; z-index: 1; }
+
+  .cta-section h2 {
+    font-family: 'Nunito', sans-serif;
+    font-size: clamp(28px, 4vw, 44px);
+    font-weight: 900;
+    color: white;
+    letter-spacing: -0.5px;
+    margin-bottom: 14px;
+    line-height: 1.15;
+  }
+
+  .cta-section h2 span { color: var(--teal); }
+
+  .cta-section p {
+    color: rgba(255,255,255,0.8);
+    font-size: 15.5px;
+    margin-bottom: 36px;
+    font-weight: 400;
+  }
+
+  .cta-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+  .btn-white {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: white;
+    color: var(--blue);
+    font-weight: 700;
+    font-size: 15px;
+    padding: 14px 28px;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: all 0.25s;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  }
+
+  .btn-white:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0,0,0,0.25); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: #0f1623;
+    padding: 32px 40px;
+  }
+
+  .footer-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .footer-logo { display: flex; align-items: center; gap: 8px; }
+
+  .footer-logo-icon {
+    width: 32px; height: 32px;
+    background: var(--blue);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .footer-logo-text {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 14px;
+    color: white;
+  }
+
+  .footer-logo-text span { color: var(--blue-mid); }
+
+  footer p {
+    font-size: 12.5px;
+    color: rgba(255,255,255,0.45);
+  }
+
+  footer a { color: var(--blue-mid); text-decoration: none; }
+
+  /* responsive */
+  @media (max-width: 768px) {
+    nav { padding: 0 20px; }
+    .nav-link { display: none; }
+    .hero { padding: 50px 20px; }
+    .hero-inner { grid-template-columns: 1fr; gap: 40px; }
+    .phone-wrap { order: -1; }
+    .phone { width: 220px; }
+    .phone-screen { height: 400px; }
+    .stats-inner { grid-template-columns: repeat(2, 1fr); }
+    .section { padding: 56px 20px; }
+    .services-grid { grid-template-columns: 1fr; }
+    .flow-grid { grid-template-columns: 1fr; gap: 24px; }
+    .flow-grid::before { display: none; }
+    .reliability-grid { grid-template-columns: 1fr; }
+    .stats-bar { padding: 20px; }
+    .cta-section { padding: 56px 20px; }
+    footer { padding: 24px 20px; }
+    .footer-inner { flex-direction: column; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav>
+  <a href="#" class="nav-logo">
+    <div class="logo-svg">
+      <div class="logo-icon-wrap">
+        <!-- Curve Tech Solution Logo SVG -->
+        <svg width="52" height="42" viewBox="0 0 52 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="logoGrad" x1="0" y1="0" x2="52" y2="42" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#4da6e8"/>
+              <stop offset="100%" stop-color="#1a5fa8"/>
+            </linearGradient>
+            <linearGradient id="swooshGrad" x1="0" y1="0" x2="52" y2="20" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#5bb8f5"/>
+              <stop offset="100%" stop-color="#1a5fa8"/>
+            </linearGradient>
+          </defs>
+          <!-- Monitor screen -->
+          <rect x="10" y="3" width="32" height="22" rx="2" stroke="url(#logoGrad)" stroke-width="2.2" fill="none"/>
+          <!-- Monitor stand -->
+          <line x1="26" y1="25" x2="26" y2="30" stroke="url(#logoGrad)" stroke-width="2"/>
+          <!-- C letter inside screen -->
+          <text x="26" y="19" text-anchor="middle" font-family="Georgia, serif" font-style="italic" font-size="13" font-weight="700" fill="url(#logoGrad)">C</text>
+          <!-- Top swoosh -->
+          <path d="M6 10 Q26 1 46 10" stroke="url(#swooshGrad)" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+          <!-- Bottom swoosh -->
+          <path d="M6 22 Q26 31 46 22" stroke="url(#swooshGrad)" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+          <!-- Keyboard -->
+          <rect x="12" y="31" width="28" height="7" rx="1.5" stroke="url(#logoGrad)" stroke-width="1.6" fill="none"/>
+          <line x1="16" y1="33" x2="36" y2="33" stroke="url(#logoGrad)" stroke-width="0.9" opacity="0.7"/>
+          <line x1="16" y1="35.5" x2="36" y2="35.5" stroke="url(#logoGrad)" stroke-width="0.9" opacity="0.7"/>
+          <line x1="19" y1="33" x2="19" y2="36" stroke="url(#logoGrad)" stroke-width="0.7" opacity="0.5"/>
+          <line x1="23" y1="33" x2="23" y2="36" stroke="url(#logoGrad)" stroke-width="0.7" opacity="0.5"/>
+          <line x1="27" y1="33" x2="27" y2="36" stroke="url(#logoGrad)" stroke-width="0.7" opacity="0.5"/>
+          <line x1="31" y1="33" x2="31" y2="36" stroke="url(#logoGrad)" stroke-width="0.7" opacity="0.5"/>
+        </svg>
+      </div>
+      <div>
+        <div class="logo-text"><span>CURVE</span> TECH SOLUTION</div>
+        <span class="nav-tagline">Empowering Businesses with AI</span>
+      </div>
+    </div>
+  </a>
+  <div class="nav-right">
+    <a href="https://www.curvetechsolution.online" class="nav-link" target="_blank">Home</a>
+    <a href="https://www.curvetechsolution.online" class="nav-link" target="_blank">Services</a>
+    <a href="https://wa.me/923239236099?text=Hi%2C%20I%20want%20to%20know%20more%20about%20Curve%20Tech%20services!" class="btn-nav" target="_blank">Chat with Lisa →</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-dots"></div>
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="hero-eyebrow">
+        <div class="live-dot"></div>
+        AI WhatsApp Bot — Live Now
+      </div>
+      <h1>Meet <span class="accent">Lisa</span> —<br>Your <span class="accent2">Smart</span><br>Business Assistant</h1>
+      <p>An intelligent WhatsApp bot that handles leads, hiring, CV analysis, and 22-hour follow-ups — all automated, all day, every day.</p>
+      <div class="hero-btns">
+        <a href="https://wa.me/923239236099?text=Hi%2C%20I%20want%20to%20know%20more%20about%20Curve%20Tech%20services!" class="btn-wa" target="_blank">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Chat with Lisa Now
+        </a>
+        <a href="https://www.curvetechsolution.online" class="btn-primary" target="_blank">
+          <svg viewBox="0 0 20 20" fill="currentColor"><path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z"/><path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z"/></svg>
+          Visit Website
+        </a>
+      </div>
+    </div>
+
+    <!-- PHONE -->
+    <div class="phone-wrap">
+      <div class="phone">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <div class="wa-header">
+            <span class="wa-back">‹</span>
+            <div class="wa-avatar">CT</div>
+            <div class="wa-info">
+              <div class="wa-name">Lisa — Curve Tech</div>
+              <div class="wa-status">online • AI Assistant</div>
+            </div>
+          </div>
+          <div class="wa-chat" id="chatbox"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div class="stat-item">
+      <div class="stat-num">24/7</div>
+      <div class="stat-label">Always Online</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">&lt;3s</div>
+      <div class="stat-label">Reply Time</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">22h</div>
+      <div class="stat-label">Auto Follow-up</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">100%</div>
+      <div class="stat-label">Automated</div>
+    </div>
+  </div>
+</div>
+
+<!-- FEATURES / SERVICES -->
+<section class="section">
+  <div class="section-inner">
+    <div class="text-center">
+      <div class="section-eyebrow">Our Services</div>
+      <div class="section-title"><span class="hl">Smart Solutions</span> for Your Business</div>
+      <p class="section-sub">Lisa handles every type of conversation automatically — leads, hiring, and follow-ups — powered by Gemini AI.</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="svc-icon">🎯</div>
+        <h3>Lead Detection</h3>
+        <p>Automatically classifies every message as a lead or job application and routes it to the correct AI agent instantly.</p>
+        <a href="#" class="learn-more">Learn More →</a>
+      </div>
+      <div class="service-card">
+        <div class="svc-icon">💬</div>
+        <h3>Human-like Conversation</h3>
+        <p>Lisa replies with typing indicators and natural delays. Clients experience a warm, human interaction — not a robot.</p>
+        <a href="#" class="learn-more">Learn More →</a>
+      </div>
+      <div class="service-card">
+        <div class="svc-icon">📋</div>
+        <h3>CV Analysis</h3>
+        <p>Job applicants send their CV on WhatsApp. Lisa reads and analyzes it with AI, scores the candidate, and notifies the team.</p>
+        <a href="#" class="learn-more">Learn More →</a>
+      </div>
+      <div class="service-card">
+        <div class="svc-icon">📊</div>
+        <h3>Google Sheets CRM</h3>
+        <p>Every lead and applicant is saved automatically — name, phone, service, summary — into your live Google Sheet dashboard.</p>
+        <a href="#" class="learn-more">Learn More →</a>
+      </div>
+      <div class="service-card">
+        <div class="svc-icon">📧</div>
+        <h3>Instant Gmail Alerts</h3>
+        <p>Get an email the moment a new lead is captured or a job application arrives, with the full conversation summary.</p>
+        <a href="#" class="learn-more">Learn More →</a>
+      </div>
+      <div class="service-card">
+        <div class="svc-icon">⏰</div>
+        <h3>22-Hour Follow-up</h3>
+        <p>Leads that go cold are automatically re-engaged after 22 hours with a warm follow-up message — zero manual effort.</p>
+        <a href="#" class="learn-more">Learn More →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="section section-alt">
+  <div class="section-inner">
+    <div class="text-center">
+      <div class="section-eyebrow">How We Do It</div>
+      <div class="section-title">The Full <span class="hl">Automation</span> Flow</div>
+      <p class="section-sub">From the moment a message arrives to when the deal is logged — everything happens automatically.</p>
+    </div>
+    <div class="flow-grid">
+      <div class="flow-step">
+        <div class="flow-num">01</div>
+        <h4>Message Received</h4>
+        <p>WhatsApp message triggers the bot. It marks as read and shows a typing reaction immediately.</p>
+        <span class="flow-tag">Mark as Read + Typing</span>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">02</div>
+        <h4>AI Classifies Intent</h4>
+        <p>Gemini AI reads the message and decides: is this a lead, a job applicant, or a greeting?</p>
+        <span class="flow-tag">Gemini AI Classifier</span>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">03</div>
+        <h4>Smart Routing</h4>
+        <p>Routes to Lead Agent (sales) or Hiring Agent (HR) based on intent, with full memory of past messages.</p>
+        <span class="flow-tag">Session Router</span>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">04</div>
+        <h4>Conversation & Data Saved</h4>
+        <p>Lisa chats naturally, collects details, and saves everything to Google Sheets automatically.</p>
+        <span class="flow-tag">Google Sheets CRM</span>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">05</div>
+        <h4>Owner Gets Alerted</h4>
+        <p>You receive a Gmail alert immediately with the full lead summary or applicant details.</p>
+        <span class="flow-tag">Gmail Alert</span>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">06</div>
+        <h4>22-Hour Follow-up</h4>
+        <p>If no response, Lisa automatically follows up after 22 hours to re-engage the prospect.</p>
+        <span class="flow-tag">Auto Follow-up</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RELIABILITY -->
+<section class="section">
+  <div class="section-inner">
+    <div class="section-eyebrow">System Intelligence</div>
+    <div class="section-title">Built for <span class="hl">Reliability</span></div>
+    <p class="section-sub">The bot is built with redundancy — follow-up automation and error handling ensure nothing slips through.</p>
+    <div class="reliability-grid">
+      <div class="rel-card followup">
+        <div class="rel-head">
+          <div class="rel-icon blue">⏰</div>
+          <h3>22-Hour Follow-up System</h3>
+        </div>
+        <ul class="rel-list">
+          <li><span class="ck">✓</span> Triggered automatically if lead goes cold after conversation</li>
+          <li><span class="ck">✓</span> Sends a warm, personalized re-engagement message via WhatsApp</li>
+          <li><span class="ck">✓</span> Runs only once per lead — no spam, no annoyance</li>
+          <li><span class="ck">✓</span> Follow-up status logged in Google Sheets automatically</li>
+        </ul>
+      </div>
+      <div class="rel-card errorh">
+        <div class="rel-head">
+          <div class="rel-icon teal">🛡️</div>
+          <h3>Error Handler System</h3>
+        </div>
+        <ul class="rel-list">
+          <li><span class="ck">✓</span> Catches failures across every node in the workflow</li>
+          <li><span class="ck">✓</span> Sends an instant error alert to the owner via Gmail</li>
+          <li><span class="ck">✓</span> Logs the customer's phone number for manual recovery</li>
+          <li><span class="ck">✓</span> Workflow resumes cleanly without crashing or data loss</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="cta-inner">
+    <h2>Ready to <span>Transform</span><br>Your Business?</h2>
+    <p>Test Lisa live right now — send a message and experience the full AI system in action.</p>
+    <div class="cta-btns">
+      <a href="https://wa.me/923239236099?text=Hi%2C%20I%20want%20to%20know%20more%20about%20Curve%20Tech%20services!" class="btn-wa" target="_blank">
+        <svg viewBox="0 0 24 24" fill="currentColor" style="width:20px;height:20px;"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Chat with Lisa Now
+      </a>
+      <a href="https://www.curvetechsolution.online" class="btn-white" target="_blank">
+        🌐 Book Free Consultation
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">
+      <div class="footer-logo-icon" style="background:none;">
+        <svg width="38" height="30" viewBox="0 0 52 42" fill="none">
+          <defs>
+            <linearGradient id="fGrad" x1="0" y1="0" x2="52" y2="42" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#5bb8f5"/>
+              <stop offset="100%" stop-color="#4da6e8"/>
+            </linearGradient>
+          </defs>
+          <rect x="10" y="3" width="32" height="22" rx="2" stroke="url(#fGrad)" stroke-width="2.2" fill="none"/>
+          <text x="26" y="19" text-anchor="middle" font-family="Georgia,serif" font-style="italic" font-size="13" font-weight="700" fill="url(#fGrad)">C</text>
+          <path d="M6 10 Q26 1 46 10" stroke="url(#fGrad)" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+          <path d="M6 22 Q26 31 46 22" stroke="url(#fGrad)" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+          <rect x="12" y="31" width="28" height="7" rx="1.5" stroke="url(#fGrad)" stroke-width="1.6" fill="none"/>
+          <line x1="16" y1="33" x2="36" y2="33" stroke="url(#fGrad)" stroke-width="0.9" opacity="0.7"/>
+          <line x1="16" y1="35.5" x2="36" y2="35.5" stroke="url(#fGrad)" stroke-width="0.9" opacity="0.7"/>
+        </svg>
+      </div>
+      <div class="footer-logo-text"><span>CURVE</span> TECH SOLUTION</div>
+    </div>
+    <p>© 2025 CurveTech Solution (Pvt) Ltd. All rights reserved.</p>
+    <p>Powered by <a href="#">n8n + Gemini AI</a></p>
+  </div>
+</footer>
+
+<script>
+  const msgs = [
+    { t: 'user', m: 'Hi! I need a website for my business', time: '10:01' },
+    { t: 'bot',  m: 'Hey there! 👋 I\'m Lisa from Curve Tech. Great to hear from you! What kind of business do you have?', time: '10:01' },
+    { t: 'user', m: 'It\'s a clothing brand, I need an online store', time: '10:02' },
+    { t: 'bot',  m: 'Love it! 🛍️ E-commerce is our specialty. We build full branded online stores. Can I get your name to note this down?', time: '10:02' },
+    { t: 'user', m: 'Sure, I\'m Ahmed from Karachi', time: '10:03' },
+    { t: 'bot',  m: 'Perfect Ahmed! ✅ I\'ve saved your details. Our team will reach out within a few hours with a custom quote! 🎉', time: '10:03' },
+  ];
+
+  let i = 0;
+  const box = document.getElementById('chatbox');
+
+  function addMsg(msg) {
+    if (msg.t === 'bot') {
+      const typing = document.createElement('div');
+      typing.className = 'typing-bubble';
+      typing.innerHTML = '<div class="t-dot"></div><div class="t-dot"></div><div class="t-dot"></div>';
+      box.appendChild(typing);
+      box.scrollTop = box.scrollHeight;
+      setTimeout(() => {
+        box.removeChild(typing);
+        const el = document.createElement('div');
+        el.className = 'msg msg-bot';
+        el.innerHTML = msg.m + '<span class="msg-time">' + msg.time + '</span>';
+        box.appendChild(el);
+        box.scrollTop = box.scrollHeight;
+      }, 1300);
+    } else {
+      const el = document.createElement('div');
+      el.className = 'msg msg-user';
+      el.innerHTML = msg.m + '<span class="msg-time">' + msg.time + '</span>';
+      box.appendChild(el);
+      box.scrollTop = box.scrollHeight;
+    }
+  }
+
+  function next() {
+    if (i < msgs.length) {
+      addMsg(msgs[i++]);
+      setTimeout(next, msgs[i-1].t === 'bot' ? 2800 : 1600);
+    } else {
+      setTimeout(() => { i = 0; box.innerHTML = ''; setTimeout(next, 800); }, 4000);
+    }
+  }
+
+  setTimeout(next, 800);
+</script>
+</body>
+</html>
